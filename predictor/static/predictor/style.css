@@ -1,0 +1,23 @@
+body {
+    background: #f5f7fb;
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+}
+
+.form-control,
+.form-select {
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.btn {
+    padding: 12px;
+    border-radius: 8px;
+}
+
+#predictionValue {
+    font-weight: 700;
+}
