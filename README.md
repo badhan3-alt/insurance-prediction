@@ -1,4 +1,4 @@
-# Medical Insurance Cost Predictor — Django Full Stack
+# Medical Insurance Cost Predictor
 
 This project turns the supplied `insurance.ipynb` machine-learning work into a Django web application.
 
