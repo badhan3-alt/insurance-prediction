@@ -3,376 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Insurance Cost Predictor</title>
 
-    <title>Medical Insurance Prediction</title>
-
-    <!-- Bootstrap -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     {% load static %}
-
-    <link
-        rel="stylesheet"
-        href="{% static 'predictor/style.css' %}"
-    >
+    <link rel="stylesheet" href="{% static 'predictor/style.css' %}">
 </head>
 
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="#">
-            Insurance Predictor
-        </a>
-    </div>
-</nav>
 
 
-<!-- Main Section -->
-<div class="container py-5">
 
-    <div class="row justify-content-center">
+<!-- ===== Page ===== -->
+<div class="page">
+    <div class="panel-card">
 
-        <div class="col-lg-7">
+        <!-- Left: Info Panel -->
+        <div class="panel-left">
+            <div class="panel-left-content">
 
-            <div class="card shadow">
+                <div class="panel-tag">ML-Powered</div>
 
-                <div class="card-body p-4">
+                <h2>Estimate Your Insurance Cost</h2>
+                <p>Our machine learning model analyzes your health profile to provide an accurate annual premium estimate.</p>
 
-                    <h2 class="text-center mb-2">
-                        Medical Insurance Cost Prediction
-                    </h2>
+                <ul class="info-list">
+                    <li>
+                        <span class="check"></span>
+                        Trained on real-world medical cost data
+                    </li>
+                    <li>
+                        <span class="check"></span>
+                        Considers age, BMI, smoking status & region
+                    </li>
+                    <li>
+                        <span class="check"></span>
+                        Instant prediction in under a second
+                    </li>
+                    <li>
+                        <span class="check"></span>
+                        Results based on US insurance benchmarks
+                    </li>
+                </ul>
 
-                    <p class="text-center text-muted mb-4">
-                        Enter your information to estimate insurance charges.
-                    </p>
+                <div class="panel-divider"></div>
 
-
-                    <!-- Prediction Form -->
-                    <form id="predictionForm">
-
-                        <!-- Age -->
-                        <div class="mb-3">
-                            <label class="form-label">
-                                Age
-                            </label>
-
-                            <input
-                                type="number"
-                                class="form-control"
-                                id="age"
-                                min="1"
-                                required
-                            >
-                        </div>
-
-
-                        <!-- Gender -->
-                        <div class="mb-3">
-
-                            <label class="form-label">
-                                Gender
-                            </label>
-
-                            <select
-                                class="form-select"
-                                id="sex"
-                                required
-                            >
-                                <option value="">Select Gender</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                            </select>
-
-                        </div>
-
-
-                        <!-- BMI -->
-                        <div class="mb-3">
-
-                            <label class="form-label">
-                                BMI
-                            </label>
-
-                            <input
-                                type="number"
-                                class="form-control"
-                                id="bmi"
-                                step="0.1"
-                                min="0"
-                                required
-                            >
-
-                        </div>
-
-
-                        <!-- Children -->
-                        <div class="mb-3">
-
-                            <label class="form-label">
-                                Number of Children
-                            </label>
-
-                            <input
-                                type="number"
-                                class="form-control"
-                                id="children"
-                                min="0"
-                                required
-                            >
-
-                        </div>
-
-
-                        <!-- Smoker -->
-                        <div class="mb-3">
-
-                            <label class="form-label">
-                                Smoker
-                            </label>
-
-                            <select
-                                class="form-select"
-                                id="smoker"
-                                required
-                            >
-                                <option value="">
-                                    Select Option
-                                </option>
-
-                                <option value="yes">
-                                    Yes
-                                </option>
-
-                                <option value="no">
-                                    No
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- Region -->
-                        <div class="mb-4">
-
-                            <label class="form-label">
-                                Region
-                            </label>
-
-                            <select
-                                class="form-select"
-                                id="region"
-                                required
-                            >
-
-                                <option value="">
-                                    Select Region
-                                </option>
-
-                                <option value="southwest">
-                                    Southwest
-                                </option>
-
-                                <option value="southeast">
-                                    Southeast
-                                </option>
-
-                                <option value="northwest">
-                                    Northwest
-                                </option>
-
-                                <option value="northeast">
-                                    Northeast
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <!-- Button -->
-                        <button
-                            type="submit"
-                            class="btn btn-primary w-100"
-                            id="predictButton"
-                        >
-                            Predict Insurance Cost
-                        </button>
-
-                    </form>
-
-
-                    <!-- Loading -->
-                    <div
-                        id="loading"
-                        class="text-center mt-4 d-none"
-                    >
-
-                        <div
-                            class="spinner-border text-primary"
-                            role="status"
-                        ></div>
-
-                        <p class="mt-2">
-                            Calculating prediction...
-                        </p>
-
-                    </div>
-
-
-                    <!-- Result -->
-                    <div
-                        id="result"
-                        class="alert alert-success text-center mt-4 d-none"
-                    >
-
-                        <h5>
-                            Estimated Insurance Cost
-                        </h5>
-
-                        <h2 id="predictionValue">
-                            $0.00
-                        </h2>
-
-                    </div>
-
-
-                    <!-- Error -->
-                    <div
-                        id="error"
-                        class="alert alert-danger mt-4 d-none"
-                    ></div>
-
+                <div class="model-stat">
+                    <span>Model Algorithm</span>
+                    <strong>Linear Regression</strong>
+                </div>
+                <div class="model-stat" style="margin-top:8px;">
+                    <span>Training Samples</span>
+                    <strong>1,338</strong>
                 </div>
 
             </div>
-
         </div>
 
-    </div>
+        <!-- Right: Form Panel -->
+        <div class="panel-right">
 
+            <div class="form-title">Personal Health Profile</div>
+            <div class="form-subtitle">Fill in the details below to get your estimated insurance charge.</div>
+
+            <form id="predictionForm" novalidate>
+
+                <!-- Section: Demographics -->
+                <div class="section-label">Demographics</div>
+
+                <div class="field-row">
+                    <div class="field-group">
+                        <label class="form-label" for="age">Age</label>
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="age"
+                            placeholder="e.g. 35"
+                            min="1" max="120"
+                            required
+                        >
+                    </div>
+
+                    <div class="field-group">
+                        <label class="form-label" for="sex">Biological Sex</label>
+                        <select class="form-select" id="sex" required>
+                            <option value="">Select…</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="field-row">
+                    <div class="field-group">
+                        <label class="form-label" for="bmi">BMI <span style="font-weight:400;color:#94a3b8;">(kg/m²)</span></label>
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="bmi"
+                            placeholder="e.g. 24.5"
+                            step="0.1" min="10" max="60"
+                            required
+                        >
+                    </div>
+
+                    <div class="field-group">
+                        <label class="form-label" for="children">Dependents</label>
+                        <input
+                            type="number"
+                            class="form-control"
+                            id="children"
+                            placeholder="Number of children"
+                            min="0" max="10"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <!-- Section: Lifestyle & Location -->
+                <div class="section-label" style="margin-top:8px;">Lifestyle & Location</div>
+
+                <div class="field-row">
+                    <div class="field-group">
+                        <label class="form-label" for="smoker">Smoker</label>
+                        <select class="form-select" id="smoker" required>
+                            <option value="">Select…</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+
+                    <div class="field-group">
+                        <label class="form-label" for="region">Region</label>
+                        <select class="form-select" id="region" required>
+                            <option value="">Select…</option>
+                            <option value="southwest">Southwest</option>
+                            <option value="southeast">Southeast</option>
+                            <option value="northwest">Northwest</option>
+                            <option value="northeast">Northeast</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="btn-submit" id="predictButton">
+                    Calculate Insurance Cost
+                </button>
+
+            </form>
+
+
+            <!-- Loading -->
+            <div id="loading" class="d-none">
+                <div class="loading-dot"></div>
+                <div class="loading-dot"></div>
+                <div class="loading-dot"></div>
+                <span>Running prediction model…</span>
+            </div>
+
+
+            <!-- Result -->
+            <div id="result" class="result-box d-none">
+                <div class="result-label">Estimated Annual Premium</div>
+                <div class="result-value" id="predictionValue">$0.00</div>
+                <div class="result-note">Estimate based on your health profile. Actual costs may vary by insurer.</div>
+            </div>
+
+
+            <!-- Error -->
+            <div id="error" class="error-box d-none"></div>
+
+        </div>
+        <!-- /panel-right -->
+
+    </div>
 </div>
 
 
-<!-- JavaScript -->
+<!-- ===== Footer ===== -->
+<footer>
+    InsureIQ &mdash; Medical Cost Prediction System &nbsp;|&nbsp; Powered by Linear Regression ML
+</footer>
+
+
+<!-- ===== JavaScript ===== -->
 <script>
+const form            = document.getElementById("predictionForm");
+const resultPanel     = document.getElementById("result");
+const errorPanel      = document.getElementById("error");
+const loading         = document.getElementById("loading");
+const predictionValue = document.getElementById("predictionValue");
+const predictButton   = document.getElementById("predictButton");
 
-const form = document.getElementById("predictionForm");
-
-const result = document.getElementById("result");
-const error = document.getElementById("error");
-const loading = document.getElementById("loading");
-const predictionValue =
-    document.getElementById("predictionValue");
-
-
-form.addEventListener("submit", async function(event) {
-
+form.addEventListener("submit", async function (event) {
     event.preventDefault();
 
-
-    // Hide previous messages
-    result.classList.add("d-none");
-    error.classList.add("d-none");
-
+    // Reset
+    resultPanel.classList.add("d-none");
+    errorPanel.classList.add("d-none");
     loading.classList.remove("d-none");
+    predictButton.disabled = true;
 
-
-    // Collect form data
     const data = {
-
-        age: parseInt(
-            document.getElementById("age").value
-        ),
-
-        sex:
-            document.getElementById("sex").value,
-
-        bmi: parseFloat(
-            document.getElementById("bmi").value
-        ),
-
-        children: parseInt(
-            document.getElementById("children").value
-        ),
-
-        smoker:
-            document.getElementById("smoker").value,
-
-        region:
-            document.getElementById("region").value
+        age:      parseInt(document.getElementById("age").value),
+        sex:      document.getElementById("sex").value,
+        bmi:      parseFloat(document.getElementById("bmi").value),
+        children: parseInt(document.getElementById("children").value),
+        smoker:   document.getElementById("smoker").value,
+        region:   document.getElementById("region").value,
     };
 
-
     try {
+        const response = await fetch("/api/predict/", {
+            method:  "POST",
+            headers: { "Content-Type": "application/json" },
+            body:    JSON.stringify(data),
+        });
 
-        const response = await fetch(
-            "/api/predict/",
-            {
-                method: "POST",
+        const responseData = await response.json();
 
-                headers: {
-                    "Content-Type":
-                        "application/json"
-                },
+        if (!response.ok) throw new Error(JSON.stringify(responseData));
 
-                body: JSON.stringify(data)
-            }
-        );
+        predictionValue.textContent = "$" + Number(responseData.predicted_charge)
+            .toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-
-        const responseData =
-            await response.json();
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                JSON.stringify(responseData)
-            );
-
-        }
-
-
-        // Show prediction
-        predictionValue.textContent =
-            "$" +
-            Number(
-                responseData.predicted_charge
-            ).toLocaleString(
-                "en-US",
-                {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                }
-            );
-
-
-        result.classList.remove("d-none");
-
+        resultPanel.classList.remove("d-none");
 
     } catch (err) {
-
-        error.textContent =
-            "Something went wrong. Please check your input and try again.";
-
-        error.classList.remove("d-none");
-
+        errorPanel.textContent = "Something went wrong. Please check your inputs and try again.";
+        errorPanel.classList.remove("d-none");
         console.error(err);
 
     } finally {
-
         loading.classList.add("d-none");
-
+        predictButton.disabled = false;
     }
-
 });
-
 </script>
 
 </body>
